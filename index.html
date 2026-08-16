@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japan Market Data — Price & Listing Scrapers for Japanese Resale Marketplaces</title>
+<meta name="description" content="Programmatic access to pricing and listing data from Japan's biggest resale marketplaces: Mandarake auction, DLsite doujin, goo-net used cars, used camera, watch, kimono and more. Pay-per-result APIs for developers and resellers.">
+<style>
+  :root{--bg:#0f1115;--card:#1a1d24;--fg:#e8eaed;--acc:#ff6b35;--muted:#a0a7b1;--line:#2a2e37}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px}
+  header{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px}
+  h1{font-size:2rem;line-height:1.25;margin-bottom:12px}
+  h1 em{color:var(--acc);font-style:normal}
+  p.lead{color:var(--muted);font-size:1.05rem;max-width:760px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;margin:24px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .card h2{font-size:1.15rem;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.95rem}
+  .card .url{display:inline-block;margin-top:12px;color:var(--acc);text-decoration:none;font-weight:600;border:1px solid var(--acc);padding:8px 14px;border-radius:8px;font-size:.9rem}
+  .card .url:hover{background:var(--acc);color:#0f1115}
+  h3{padding-top:24px;font-size:1.25rem}
+  .note{background:var(--card);border-left:4px solid var(--acc);padding:16px;border-radius:8px;margin:20px 0;color:var(--muted);font-size:.95rem}
+  footer{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;color:var(--muted);font-size:.85rem}
+  a{color:var(--acc)}
+  code{background:#262a33;padding:1px 6px;border-radius:4px;font-size:.9em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Japan Market Data APIs — <em>Price &amp; Listing Scrapers</em></h1>
+    <p class="lead">Programmatic, pay-per-result access to pricing and listing data from Japan's biggest resale and auction marketplaces. Built for developers, resellers, price-monitoring tools and AI agents.</p>
+  </header>
+
+  <p class="note"><strong>How data is delivered:</strong> every scraper runs on the Apify cloud, returns clean JSON (price, condition, URL, images, timestamps), and is billed only per result — roughly <code>$0.002 per item</code>. No monthly fee on the data variety you don't use. Most niche scrapers cost under $1 for a full sweep.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Anime &amp; Doujin Collectibles</h2>
+      <p>Mandarake auction listings (figures, manga, trading cards) and DLsite doujin market (voice, art, ASMR) with rich fields.</p>
+      <a class="url" href="https://apify.com/fruitful_quintessence/mandarake-auction-scraper">Mandarake &rarr;</a>
+      <a class="url" href="https://apify.com/fruitful_quintessence/dlsite-scraper">DLsite &rarr;</a>
+    </div>
+    <div class="card">
+      <h2>Used Cars &amp; Motorcycles</h2>
+      <p>Nationwide goo-net used car inventory and goobike motorcycle listings with price, spec and dealer data.</p>
+      <a class="url" href="https://apify.com/fruitful_quintessence/goo-net-japan-used-cars-nationwide-inventory">goo-net &rarr;</a>
+    </div>
+    <div class="card">
+      <h2>Cameras, Watches &amp; Luxury</h2>
+      <p>Cross-shop price comparison for used cameras (Kitamura), luxury watches (Jackroad), and branded goods (Komehyo).</p>
+      <a class="url" href="https://apify.com/fruitful_quintessence">Browse &rarr;</a>
+    </div>
+  </div>
+
+  <h3>Who uses this data</h3>
+  <ul>
+    <li><strong>Resellers &amp; flippers</strong> — monitor Japanese prices and list-worthy arbitrage in real time.</li>
+    <li><strong>Price-monitoring tools</strong> — track when an item's price drops below your threshold.</li>
+    <li><strong>AI agents &amp; LLM tools</strong> — several actors are exposed as MCP servers, callable directly from Claude, Cursor and other assistants.</li>
+  </ul>
+
+  <div class="note">
+    <strong>Using it as a developer:</strong> start a run with the Apify HTTP API (<code>POST /runs</code>) or the Python/JS SDK, poll the dataset, and pull the results. Example output field set: <code>item_name, current_price_jpy, condition, item_url, image_url, sold_at</code>.
+  </div>
+
+  <footer>
+    Independent utility publisher. All scrapers target retail storefronts and respect published terms; output is pricing/listing data only (no personal seller data). Prices in JPY unless converted.
+  </footer>
+</div>
+</body>
+</html>

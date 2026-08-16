@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Track and Monitor Mandarake Prices Automatically — Anime Figure Price Watching</title>
+<meta name="description" content="Stop refreshing Mandarake by hand. Learn to automatically monitor Mandarake auction listings for anime figures, manga, and trading cards, get price-drop alerts, and export data to CSV or your own tool.">
+<style>
+  body{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;background:#f6f7f9;color:#1a1d24;max-width:820px;margin:0 auto;padding:32px 20px;line-height:1.7}
+  h1{font-size:1.8rem;line-height:1.3;margin-bottom:8px}
+  .sub{color:#5b6470;font-size:1.05rem;margin-bottom:28px}
+  h2{font-size:1.3rem;margin-top:32px;border-bottom:2px solid #e3e6ea;padding-bottom:6px}
+  pre{background:#111418;color:#e6e9ed;padding:14px;border-radius:8px;overflow-x:auto;font-size:.9rem}
+  code{background:#eef0f3;padding:1px 5px;border-radius:4px}
+  .cta{display:inline-block;background:#ff6b35;color:#fff;font-weight:700;padding:12px 22px;border-radius:8px;text-decoration:none;margin:16px 0}
+  .cta:hover{background:#e55c2b}
+  .box{background:#fff;border:1px solid #e3e6ea;border-radius:10px;padding:16px 20px;margin:16px 0}
+</style>
+</head>
+<body>
+<h1>How to Track Mandarake Prices Automatically</h1>
+<p class="sub">A concrete guide to monitoring Japanese anime figure / manga prices without refreshing the site all day.</p>
+
+<p>If you collect anime figures, manga, or doujin trading goods, you already know Mandarake — Japan's largest second-hand otaku marketplace — is where hard-to-find items surface. The problem: hot items sell in minutes, and prices swing daily. Watching dozens of search terms by hand is impossible.</p>
+
+<p>This guide covers a practical, cheap way to automatically monitor Mandarake auction and listing prices, get notified on drops, and keep historical data for "is this a good price?" decisions.</p>
+
+<h2>1. What data you actually need</h2>
+<p>For effective price watching you want, per item:</p>
+<ul>
+  <li>Item name / series / character</li>
+  <li>Current price in JPY</li>
+  <li>Condition (mint / used / damaged)</li>
+  <li>Sold or available status</li>
+  <li>Listing URL and image</li>
+  <li>Timestamp so you can chart the price over time</li>
+</ul>
+<p>That last field is the one people usually forget — a single snapshot tells you nothing. Price <em>history</em> is what lets you spot a bargain or an overpriced listing before you commit.</p>
+
+<h2>2. Two ways to collect the data</h2>
+<p>Hand-rolling a scraper against Mandarake is brittle — the site is JS-heavy and blocks datacenter traffic. The reliable shortcut is a cloud scraped-data API that returns clean JSON.</p>
+
+<div class="box">
+<strong>Recommended:</strong> the <a href="https://apify.com/fruitful_quintessence/mandarake-auction-scraper" style="color:#ff6b35;font-weight:700">Mandarake Auction Scraper</a> runs on the Apify cloud, searches any keyword or the full category tree, and returns structured rows — item, current price JPY, url, images, condition. It's billed per result (~$0.002/item), so a full sweep of one category costs well under $1.
+</div>
+
+<p>If you'd rather write it yourself: Mandarake has search URLs of the form <code>https://order.mandarake.co.jp/order/listPage/list?category=...</code>. In practice, you'll fight pagination and bot protection — which is why most people use the cloud API and spend their time on the data, not on keeping a scraper alive.</p>
+
+<h2>3. Turn the data into price-drop alerts</h2>
+<p>Pull the dataset on a schedule (the Apify actor supports recurring runs), compare each item's current price against a threshold or a stored "last seen" value, and only alert when it crosses:</p>
+<pre>for item in dataset:
+    if item.current_price_jpy &lt;= threshold[item.name]:
+        notify(item, "price dropped to " + str(item.current_price_jpy))
+</pre>
+<p>Pipe alerts to Telegram, Discord or email. You now have a watchlist that never sleeps.</p>
+
+<h2>4. Export to CSV for decisions</h2>
+<p>Most of these APIs let you download the full run as CSV/JSON. Keep a dated export and you build your own price-history database — useful both for buying decisions and, if you resell, for justifying your asking price.</p>
+
+<h2>5. Don't store seller personal data</h2>
+<p>Stick to item + price + URL + timestamp. That's all you need, and it keeps you clear of Japan's personal-information rules around listing seller identities.</p>
+
+<h2>Bottom line</h2>
+<p>Automatic Mandarake price monitoring is a small project with a big payoff for anime/trading-card collectors: stop refreshing, start deciding. For the data layer, use the <a href="https://apify.com/fruitful_quintessence/mandarake-auction-scraper" style="color:#ff6b35;font-weight:700">Mandarake Auction Scraper</a> and put your effort into the alerting and history logic that actually saves you money.</p>
+
+<p><a class="cta" href="https://apify.com/fruitful_quintessence/mandarake-auction-scraper">Try the Mandarake Scraper →</a></p>
+</body>
+</html>
