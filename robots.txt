@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://atushi1841.github.io/japan-market-data/sitemap.xml

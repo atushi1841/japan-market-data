@@ -45,14 +45,13 @@
     </div>
     <div class="card">
       <h2>C2C Marketplaces &amp; Auctions</h2>
-      <p>Mercari Japan (Japan's largest C2C marketplace) and Yahoo! Auctions Japan listings with real-time prices, condition and seller data &mdash; the core sources for resale arbitrage and price research.</p>
+      <p>Mercari Japan (Japan's largest C2C marketplace) listings with real-time prices, condition and seller data &mdash; a core source for resale arbitrage and price research.</p>
       <a class="url" href="https://apify.com/fruitful_quintessence/mercari-japan-search-scraper">Mercari &rarr;</a>
-      <a class="url" href="https://apify.com/fruitful_quintessence/yahoo-auctions-japan-scraper">Yahoo Auctions &rarr;</a>
     </div>
     <div class="card">
-      <h2>Used Cars &amp; Motorcycles</h2>
-      <p>Nationwide goo-net used car inventory and goobike motorcycle listings with price, spec and dealer data.</p>
-      <a class="url" href="https://apify.com/fruitful_quintessence/goo-net-japan-used-cars-nationwide-inventory">goo-net &rarr;</a>
+      <h2>Real Estate &amp; Property</h2>
+      <p>Official Japanese real estate transaction prices from the MLIT Reinfolib dataset &mdash; price, area, location, building info and zoning across all 47 prefectures.</p>
+      <a class="url" href="https://apify.com/fruitful_quintessence/mlit-japan-property-prices">MLIT prices &rarr;</a>
     </div>
     <div class="card">
       <h2>Cameras, Watches &amp; Luxury</h2>
@@ -71,6 +70,42 @@
   <div class="note">
     <strong>Using it as a developer:</strong> start a run with the Apify HTTP API (<code>POST /runs</code>) or the Python/JS SDK, poll the dataset, and pull the results. Example output field set: <code>item_name, current_price_jpy, condition, item_url, image_url, sold_at</code>.
   </div>
+
+  <h3>Guides by marketplace</h3>
+  <ul>
+    <li><a href="mandarake-auction-data-api.html">Mandarake auction data API</a> — figures, manga, cards</li>
+    <li><a href="dlsite-scraper-api.html">DLsite scraper API</a> — doujin, voice, ASMR catalogue</li>
+    <li><a href="mercari-japan-price-data.html">Mercari Japan price data</a> — C2C listings</li>
+    <li><a href="japan-real-estate-price-data.html">Japan real estate price data</a> — MLIT transaction prices, 47 prefectures</li>
+  </ul>
+
+  <h3>Guides by category</h3>
+  <ul>
+    <li><a href="anime-figure-price-data.html">Anime figure price data</a></li>
+    <li><a href="japan-trading-card-price-data.html">Japan trading card price data</a></li>
+    <li><a href="doujin-market-data.html">Doujin market data</a></li>
+    <li><a href="asmr-audio-price-data.html">ASMR &amp; voice work price data</a></li>
+    <li><a href="japan-collectibles-price-api.html">Japan collectibles price API</a></li>
+  </ul>
+
+  <h3>Guides by workflow</h3>
+  <ul>
+    <li><a href="japan-market-data-api.html">Japan market data API overview</a></li>
+    <li><a href="japan-resale-market-data.html">Japan resale market data</a></li>
+    <li><a href="japan-secondhand-market-data.html">Japan secondhand market data</a></li>
+    <li><a href="japan-auction-price-data.html">Japan auction price data</a></li>
+    <li><a href="japan-price-monitoring-api.html">Japan price monitoring API</a></li>
+    <li><a href="japan-price-drop-alerts.html">Japan price drop alerts</a></li>
+    <li><a href="mercari-price-monitoring.html">Mercari price monitoring</a></li>
+    <li><a href="resale-arbitrage-japan.html">Resale arbitrage with Japanese pricing</a></li>
+  </ul>
+
+  <h3>For developers &amp; AI agents</h3>
+  <ul>
+    <li><a href="japan-market-data-mcp-server.html">Japan market data MCP server</a> — call live prices from Claude and other clients</li>
+    <li><a href="japan-market-data-for-ai-agents.html">Japanese market data for AI agents</a></li>
+    <li><a href="japan-market-data-csv-export.html">Japan market data to CSV</a> — spreadsheet-ready exports</li>
+  </ul>
 
   <footer>
     Independent utility publisher. All scrapers target retail storefronts and respect published terms; output is pricing/listing data only (no personal seller data). Prices in JPY unless converted.

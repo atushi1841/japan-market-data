@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mandarake Auction Data API — Figures, Manga, Cards</title>
+<meta name="description" content="Scrape Mandarake auction listings into JSON: figure, manga and trading card prices in JPY with condition, images and listing URLs.">
+<link rel="canonical" href="https://atushi1841.github.io/japan-market-data/mandarake-auction-data-api.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mandarake Auction Data API — Figures, Manga, Cards">
+<meta property="og:description" content="Scrape Mandarake auction listings into JSON: figure, manga and trading card prices in JPY with condition, images and listing URLs.">
+<meta property="og:url" content="https://atushi1841.github.io/japan-market-data/mandarake-auction-data-api.html">
+<style>
+  :root{--bg:#0f1115;--card:#1a1d24;--fg:#e8eaed;--acc:#ff6b35;--muted:#a0a7b1;--line:#2a2e37}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px}
+  header{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px}
+  h1{font-size:2rem;line-height:1.25;margin-bottom:12px}
+  h1 em{color:var(--acc);font-style:normal}
+  p.lead{color:var(--muted);font-size:1.05rem;max-width:760px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;margin:24px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .card h2{font-size:1.15rem;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.95rem}
+  .card .url{display:inline-block;margin-top:12px;color:var(--acc);text-decoration:none;font-weight:600;border:1px solid var(--acc);padding:8px 14px;border-radius:8px;font-size:.9rem}
+  .card .url:hover{background:var(--acc);color:#0f1115}
+  h3{padding-top:24px;font-size:1.25rem}
+  .note{background:var(--card);border-left:4px solid var(--acc);padding:16px;border-radius:8px;margin:20px 0;color:var(--muted);font-size:.95rem}
+  footer{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;color:var(--muted);font-size:.85rem}
+  a{color:var(--acc)}
+  code{background:#262a33;padding:1px 6px;border-radius:4px;font-size:.9em}
+  .crumbs{color:var(--muted);font-size:.85rem;margin-bottom:18px}
+  .crumbs a{color:var(--muted)}
+  .body p{margin:14px 0;color:#d5d9df}
+  .cta{margin:22px 0}
+  .cta .url{display:inline-block;margin:6px 10px 6px 0;color:var(--acc);text-decoration:none;font-weight:600;border:1px solid var(--acc);padding:9px 16px;border-radius:8px;font-size:.95rem}
+  .cta .url:hover{background:var(--acc);color:#0f1115}
+  table.fields{width:100%;border-collapse:collapse;margin:16px 0;font-size:.92rem}
+  table.fields th,table.fields td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.fields th{color:var(--muted);font-weight:600;width:34%}
+  table.fields td code{white-space:nowrap}
+  ul.tick{margin:14px 0 14px 20px;color:#d5d9df}
+  ul.tick li{margin:7px 0}
+  dl.faq{margin:14px 0}
+  dl.faq dt{font-weight:600;margin-top:16px}
+  dl.faq dd{color:var(--muted);margin:6px 0 0 0}
+  pre{background:#0b0d11;border:1px solid var(--line);border-radius:8px;padding:14px;overflow-x:auto;margin:16px 0}
+  pre code{background:none;padding:0;font-size:.85em;color:#c9d1d9}
+  ul.related{margin:14px 0 14px 20px}
+  ul.related li{margin:6px 0}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Mandarake Auction Data API","applicationCategory":"DeveloperApplication","operatingSystem":"Cloud (Apify)","description":"Scrape Mandarake auction listings into JSON: figure, manga and trading card prices in JPY with condition, images and listing URLs.","url":"https://atushi1841.github.io/japan-market-data/mandarake-auction-data-api.html","offers":{"@type":"Offer","price":"0.002","priceCurrency":"USD","description":"Pay per result; roughly $0.002 per item returned."},"publisher":{"@type":"Organization","name":"Japan Market Data"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this the same as general marketplace scraping?","acceptedAnswer":{"@type":"Answer","text":"No. Auction data carries an end timestamp and a realised price, which is what distinguishes a valuation signal from an asking price."}},{"@type":"Question","name":"Can I filter by keyword or category?","acceptedAnswer":{"@type":"Answer","text":"Runs are driven by the search terms you supply, so you scope a run to the series, maker or category you care about."}},{"@type":"Question","name":"What about sold lots?","acceptedAnswer":{"@type":"Answer","text":"Closed lots keep their end timestamp, so you can separate realised prices from still-live listings."}}]}</script>
+</head>
+<body>
+<div class="wrap">
+  <p class="crumbs"><a href="./">Japan Market Data</a> &rsaquo; Mandarake Auction Data API</p>
+  <header>
+    <h1>Mandarake Auction Data API</h1>
+  </header>
+
+  <div class="body">
+    <p>Mandarake is one of the reference price sources for second-hand Japanese collectibles. Its auction floor is where rare figures, vintage manga runs and unopened trading card boxes settle at their true market clearing price — not the optimistic number a seller types into a marketplace listing.</p>
+    <p>This scraper turns Mandarake auction pages into structured JSON. For anyone pricing a collection, sourcing stock, or building a valuation model, it replaces manual page-by-page checking with a dataset you can query.</p>
+  </div>
+
+  <div class="cta">
+    <a class="url" href="https://apify.com/fruitful_quintessence/mandarake-auction-scraper">Mandarake Auction Scraper &rarr;</a>
+    <a class="url" href="https://apify.com/fruitful_quintessence">All Japanese market scrapers &rarr;</a>
+  </div>
+
+  <h3>What you get</h3>
+  <table class="fields">
+    <tbody>
+      <tr><th><code>item_name</code></th><td>Auction lot title, including series and edition markers.</td></tr>
+      <tr><th><code>current_price_jpy</code></th><td>Current bid or hammer price in yen.</td></tr>
+      <tr><th><code>condition</code></th><td>Grade where the lot publishes one.</td></tr>
+      <tr><th><code>item_url</code></th><td>Direct lot URL.</td></tr>
+      <tr><th><code>image_url</code></th><td>Lot photograph.</td></tr>
+      <tr><th><code>sold_at</code></th><td>Auction end timestamp for closed lots.</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Field names follow the actor's dataset schema and can differ slightly between actors — check the actor page for the exact input and output schema before wiring it into a pipeline.</p>
+
+  <h3>Use cases</h3>
+  <ul class="tick">
+      <li>Valuation: compare a graded figure&#x27;s asking price against what auction lots actually cleared at.</li>
+      <li>Sourcing: find categories where the auction clearing price sits below overseas retail.</li>
+      <li>Catalogue building: pull images and titles for a storefront or database.</li>
+  </ul>
+
+  <h3>How a run works</h3>
+    <p class="note"><strong>Starting a run:</strong> call the Apify API with the actor id <code>fruitful_quintessence~mandarake-auction-scraper</code>, or press <em>Start</em> on the actor page and download the dataset. Check the actor page for its exact input schema — a run is scoped by the search terms you supply, and billing is per result returned (roughly <code>$0.002 per item</code>).</p>
+  <pre><code>curl -X POST &quot;https://api.apify.com/v2/acts/fruitful_quintessence~mandarake-auction-scraper/runs?token=$APIFY_TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{&quot;searchTerms&quot;: [&quot;your&quot;, &quot;search&quot;, &quot;terms&quot;]}&#x27;</code></pre>
+
+  <h3>FAQ</h3>
+  <dl class="faq">
+      <dt>Is this the same as general marketplace scraping?</dt>
+      <dd>No. Auction data carries an end timestamp and a realised price, which is what distinguishes a valuation signal from an asking price.</dd>
+      <dt>Can I filter by keyword or category?</dt>
+      <dd>Runs are driven by the search terms you supply, so you scope a run to the series, maker or category you care about.</dd>
+      <dt>What about sold lots?</dt>
+      <dd>Closed lots keep their end timestamp, so you can separate realised prices from still-live listings.</dd>
+  </dl>
+
+  <h3>Related</h3>
+  <ul class="related">
+      <li><a href="anime-figure-price-data.html">Anime Figure Price Data</a></li>
+      <li><a href="japan-trading-card-price-data.html">Japan Trading Card Price Data</a></li>
+      <li><a href="japan-collectibles-price-api.html">Japan Collectibles Price API</a></li>
+      <li><a href="japan-auction-price-data.html">Japan Auction Price Data</a></li>
+      <li><a href="blog/mandarake-price-tracking.html">Mandarake price tracking</a></li>
+      <li><a href="blog/dlsite-price-tracking.html">DLsite price tracking</a></li>
+  </ul>
+
+  <footer>
+    Independent utility publisher. All scrapers target retail storefronts and respect published terms; output is pricing/listing data only (no personal seller data). Prices in JPY unless converted.
+  </footer>
+</div>
+</body>
+</html>
