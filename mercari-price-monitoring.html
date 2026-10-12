@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mercari Price Monitoring — Automated Price Drop Alerts</title>
+<meta name="description" content="Monitor Mercari Japan listings on a schedule and alert on price drops. JSON output with yen prices, condition and listing URLs.">
+<link rel="canonical" href="https://atushi1841.github.io/japan-market-data/mercari-price-monitoring.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mercari Price Monitoring — Automated Price Drop Alerts">
+<meta property="og:description" content="Monitor Mercari Japan listings on a schedule and alert on price drops. JSON output with yen prices, condition and listing URLs.">
+<meta property="og:url" content="https://atushi1841.github.io/japan-market-data/mercari-price-monitoring.html">
+<style>
+  :root{--bg:#0f1115;--card:#1a1d24;--fg:#e8eaed;--acc:#ff6b35;--muted:#a0a7b1;--line:#2a2e37}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px}
+  header{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px}
+  h1{font-size:2rem;line-height:1.25;margin-bottom:12px}
+  h1 em{color:var(--acc);font-style:normal}
+  p.lead{color:var(--muted);font-size:1.05rem;max-width:760px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;margin:24px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .card h2{font-size:1.15rem;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.95rem}
+  .card .url{display:inline-block;margin-top:12px;color:var(--acc);text-decoration:none;font-weight:600;border:1px solid var(--acc);padding:8px 14px;border-radius:8px;font-size:.9rem}
+  .card .url:hover{background:var(--acc);color:#0f1115}
+  h3{padding-top:24px;font-size:1.25rem}
+  .note{background:var(--card);border-left:4px solid var(--acc);padding:16px;border-radius:8px;margin:20px 0;color:var(--muted);font-size:.95rem}
+  footer{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;color:var(--muted);font-size:.85rem}
+  a{color:var(--acc)}
+  code{background:#262a33;padding:1px 6px;border-radius:4px;font-size:.9em}
+  .crumbs{color:var(--muted);font-size:.85rem;margin-bottom:18px}
+  .crumbs a{color:var(--muted)}
+  .body p{margin:14px 0;color:#d5d9df}
+  .cta{margin:22px 0}
+  .cta .url{display:inline-block;margin:6px 10px 6px 0;color:var(--acc);text-decoration:none;font-weight:600;border:1px solid var(--acc);padding:9px 16px;border-radius:8px;font-size:.95rem}
+  .cta .url:hover{background:var(--acc);color:#0f1115}
+  table.fields{width:100%;border-collapse:collapse;margin:16px 0;font-size:.92rem}
+  table.fields th,table.fields td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.fields th{color:var(--muted);font-weight:600;width:34%}
+  table.fields td code{white-space:nowrap}
+  ul.tick{margin:14px 0 14px 20px;color:#d5d9df}
+  ul.tick li{margin:7px 0}
+  dl.faq{margin:14px 0}
+  dl.faq dt{font-weight:600;margin-top:16px}
+  dl.faq dd{color:var(--muted);margin:6px 0 0 0}
+  pre{background:#0b0d11;border:1px solid var(--line);border-radius:8px;padding:14px;overflow-x:auto;margin:16px 0}
+  pre code{background:none;padding:0;font-size:.85em;color:#c9d1d9}
+  ul.related{margin:14px 0 14px 20px}
+  ul.related li{margin:6px 0}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Mercari Price Monitoring","applicationCategory":"DeveloperApplication","operatingSystem":"Cloud (Apify)","description":"Monitor Mercari Japan listings on a schedule and alert on price drops. JSON output with yen prices, condition and listing URLs.","url":"https://atushi1841.github.io/japan-market-data/mercari-price-monitoring.html","offers":{"@type":"Offer","price":"0.002","priceCurrency":"USD","description":"Pay per result; roughly $0.002 per item returned."},"publisher":{"@type":"Organization","name":"Japan Market Data"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I diff runs?","acceptedAnswer":{"@type":"Answer","text":"Match records on item_url across runs and compare current_price_jpy; a lower value on the later run is a price drop."}},{"@type":"Question","name":"Can I limit monitoring to specific items?","acceptedAnswer":{"@type":"Answer","text":"Scope the run to the search terms that identify your watchlist so the result set stays small and cheap."}},{"@type":"Question","name":"What should the schedule be?","acceptedAnswer":{"@type":"Answer","text":"Daily is a sensible default; increase the frequency only for items where a few hours of lead time has real value."}}]}</script>
+</head>
+<body>
+<div class="wrap">
+  <p class="crumbs"><a href="./">Japan Market Data</a> &rsaquo; Mercari Price Monitoring</p>
+  <header>
+    <h1>Mercari Price Monitoring</h1>
+  </header>
+
+  <div class="body">
+    <p>A price watch on a C2C marketplace is only useful if it runs on a schedule. Individual sellers cut prices when an item does not move, and those cuts are the moment a marginal item becomes a good buy.</p>
+    <p>Running the Mercari scraper on a recurring schedule gives you a time series rather than a snapshot. Diff two runs by listing URL and the price changes fall out directly.</p>
+  </div>
+
+  <div class="cta">
+    <a class="url" href="https://apify.com/fruitful_quintessence/mercari-japan-search-scraper">Mercari Japan Search Scraper &rarr;</a>
+    <a class="url" href="https://apify.com/fruitful_quintessence">All Japanese market scrapers &rarr;</a>
+  </div>
+
+  <h3>What you get</h3>
+  <table class="fields">
+    <tbody>
+      <tr><th><code>item_name</code></th><td>Listing title, used as the human key in alerts.</td></tr>
+      <tr><th><code>current_price_jpy</code></th><td>Price at the time of each run — diff this field.</td></tr>
+      <tr><th><code>condition</code></th><td>Condition, so a price drop on worse condition is not a false positive.</td></tr>
+      <tr><th><code>item_url</code></th><td>Stable key for diffing runs and linking the alert.</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Field names follow the actor's dataset schema and can differ slightly between actors — check the actor page for the exact input and output schema before wiring it into a pipeline.</p>
+
+  <h3>Use cases</h3>
+  <ul class="tick">
+      <li>Alert when a watched item falls below your threshold price.</li>
+      <li>Track how long an average listing takes to sell at different price points.</li>
+      <li>Feed a dashboard that shows price history for a shortlist of items.</li>
+  </ul>
+
+  <h3>How a run works</h3>
+    <p class="note"><strong>Starting a run:</strong> call the Apify API with the actor id <code>fruitful_quintessence~mercari-japan-search-scraper</code>, or press <em>Start</em> on the actor page and download the dataset. Check the actor page for its exact input schema — a run is scoped by the search terms you supply, and billing is per result returned (roughly <code>$0.002 per item</code>).</p>
+  <pre><code>curl -X POST &quot;https://api.apify.com/v2/acts/fruitful_quintessence~mercari-japan-search-scraper/runs?token=$APIFY_TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{&quot;searchTerms&quot;: [&quot;your&quot;, &quot;search&quot;, &quot;terms&quot;]}&#x27;</code></pre>
+
+  <h3>FAQ</h3>
+  <dl class="faq">
+      <dt>How do I diff runs?</dt>
+      <dd>Match records on item_url across runs and compare current_price_jpy; a lower value on the later run is a price drop.</dd>
+      <dt>Can I limit monitoring to specific items?</dt>
+      <dd>Scope the run to the search terms that identify your watchlist so the result set stays small and cheap.</dd>
+      <dt>What should the schedule be?</dt>
+      <dd>Daily is a sensible default; increase the frequency only for items where a few hours of lead time has real value.</dd>
+  </dl>
+
+  <h3>Related</h3>
+  <ul class="related">
+      <li><a href="mercari-japan-price-data.html">Mercari Japan Price Data</a></li>
+      <li><a href="japan-price-monitoring-api.html">Japan Price Monitoring API</a></li>
+      <li><a href="japan-price-drop-alerts.html">Japan Price Drop Alerts</a></li>
+      <li><a href="japan-market-data-csv-export.html">Japan Market Data to CSV</a></li>
+      <li><a href="blog/mandarake-price-tracking.html">Mandarake price tracking</a></li>
+      <li><a href="blog/dlsite-price-tracking.html">DLsite price tracking</a></li>
+  </ul>
+
+  <footer>
+    Independent utility publisher. All scrapers target retail storefronts and respect published terms; output is pricing/listing data only (no personal seller data). Prices in JPY unless converted.
+  </footer>
+</div>
+</body>
+</html>

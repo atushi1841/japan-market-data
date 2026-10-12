@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japan Market Data to CSV — Spreadsheet-Ready Exports</title>
+<meta name="description" content="Export Japanese marketplace data to CSV or a dataframe: one row per listing with JPY price, condition, images and URLs from Apify datasets.">
+<link rel="canonical" href="https://atushi1841.github.io/japan-market-data/japan-market-data-csv-export.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Japan Market Data to CSV — Spreadsheet-Ready Exports">
+<meta property="og:description" content="Export Japanese marketplace data to CSV or a dataframe: one row per listing with JPY price, condition, images and URLs from Apify datasets.">
+<meta property="og:url" content="https://atushi1841.github.io/japan-market-data/japan-market-data-csv-export.html">
+<style>
+  :root{--bg:#0f1115;--card:#1a1d24;--fg:#e8eaed;--acc:#ff6b35;--muted:#a0a7b1;--line:#2a2e37}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px}
+  header{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px}
+  h1{font-size:2rem;line-height:1.25;margin-bottom:12px}
+  h1 em{color:var(--acc);font-style:normal}
+  p.lead{color:var(--muted);font-size:1.05rem;max-width:760px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;margin:24px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .card h2{font-size:1.15rem;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.95rem}
+  .card .url{display:inline-block;margin-top:12px;color:var(--acc);text-decoration:none;font-weight:600;border:1px solid var(--acc);padding:8px 14px;border-radius:8px;font-size:.9rem}
+  .card .url:hover{background:var(--acc);color:#0f1115}
+  h3{padding-top:24px;font-size:1.25rem}
+  .note{background:var(--card);border-left:4px solid var(--acc);padding:16px;border-radius:8px;margin:20px 0;color:var(--muted);font-size:.95rem}
+  footer{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;color:var(--muted);font-size:.85rem}
+  a{color:var(--acc)}
+  code{background:#262a33;padding:1px 6px;border-radius:4px;font-size:.9em}
+  .crumbs{color:var(--muted);font-size:.85rem;margin-bottom:18px}
+  .crumbs a{color:var(--muted)}
+  .body p{margin:14px 0;color:#d5d9df}
+  .cta{margin:22px 0}
+  .cta .url{display:inline-block;margin:6px 10px 6px 0;color:var(--acc);text-decoration:none;font-weight:600;border:1px solid var(--acc);padding:9px 16px;border-radius:8px;font-size:.95rem}
+  .cta .url:hover{background:var(--acc);color:#0f1115}
+  table.fields{width:100%;border-collapse:collapse;margin:16px 0;font-size:.92rem}
+  table.fields th,table.fields td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.fields th{color:var(--muted);font-weight:600;width:34%}
+  table.fields td code{white-space:nowrap}
+  ul.tick{margin:14px 0 14px 20px;color:#d5d9df}
+  ul.tick li{margin:7px 0}
+  dl.faq{margin:14px 0}
+  dl.faq dt{font-weight:600;margin-top:16px}
+  dl.faq dd{color:var(--muted);margin:6px 0 0 0}
+  pre{background:#0b0d11;border:1px solid var(--line);border-radius:8px;padding:14px;overflow-x:auto;margin:16px 0}
+  pre code{background:none;padding:0;font-size:.85em;color:#c9d1d9}
+  ul.related{margin:14px 0 14px 20px}
+  ul.related li{margin:6px 0}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Japan Market Data to CSV","applicationCategory":"DeveloperApplication","operatingSystem":"Cloud (Apify)","description":"Export Japanese marketplace data to CSV or a dataframe: one row per listing with JPY price, condition, images and URLs from Apify datasets.","url":"https://atushi1841.github.io/japan-market-data/japan-market-data-csv-export.html","offers":{"@type":"Offer","price":"0.002","priceCurrency":"USD","description":"Pay per result; roughly $0.002 per item returned."},"publisher":{"@type":"Organization","name":"Japan Market Data"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which formats are available?","acceptedAnswer":{"@type":"Answer","text":"Datasets export to CSV, JSON, Excel and other common formats directly from the run's dataset view."}},{"@type":"Question","name":"Do I need to write code?","acceptedAnswer":{"@type":"Answer","text":"No. A run can be started from the Apify console and the dataset downloaded from the UI; code is optional for automation."}},{"@type":"Question","name":"How do I compare two snapshots?","acceptedAnswer":{"@type":"Answer","text":"Export both, match rows on item_url, and compare the price column — the same diff approach as an API-driven monitor."}}]}</script>
+</head>
+<body>
+<div class="wrap">
+  <p class="crumbs"><a href="./">Japan Market Data</a> &rsaquo; Japan Market Data to CSV</p>
+  <header>
+    <h1>Japan Market Data to CSV</h1>
+  </header>
+
+  <div class="body">
+    <p>Not every analysis needs a pipeline. A surprising amount of useful work happens in a spreadsheet: sorting a category by price, filtering to a condition grade, and eyeballing where the outliers sit.</p>
+    <p>Apify datasets export directly to CSV, Excel and JSON, so the practical workflow is to run a scoped search, export the rows, and open the file. For recurring work, the same dataset feeds Python or a BI tool without changing anything upstream.</p>
+  </div>
+
+  <div class="cta">
+    <a class="url" href="https://apify.com/fruitful_quintessence">Browse all Japanese market scrapers &rarr;</a>
+    <a class="url" href="https://apify.com/fruitful_quintessence">All Japanese market scrapers &rarr;</a>
+  </div>
+
+  <h3>What you get</h3>
+  <table class="fields">
+    <tbody>
+      <tr><th><code>item_name</code></th><td>Column for sorting and filtering.</td></tr>
+      <tr><th><code>current_price_jpy</code></th><td>Numeric column, safe to sort and aggregate in a spreadsheet.</td></tr>
+      <tr><th><code>condition</code></th><td>Filter column for separating grades.</td></tr>
+      <tr><th><code>item_url</code></th><td>Reference column for opening the original listing.</td></tr>
+      <tr><th><code>image_url</code></th><td>Image column for visual review.</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Field names follow the actor's dataset schema and can differ slightly between actors — check the actor page for the exact input and output schema before wiring it into a pipeline.</p>
+
+  <h3>Use cases</h3>
+  <ul class="tick">
+      <li>Hand a category overview to a colleague who works in spreadsheets, not JSON.</li>
+      <li>Filter a category to one grade and sort by price to find the cheapest acceptable copy.</li>
+      <li>Archive a dated export as a price snapshot for later comparison.</li>
+  </ul>
+
+  <h3>How a run works</h3>
+    <p class="note"><strong>Starting a run:</strong> pick the actor for your marketplace from the publisher page, then start it from the Apify console or the API. Billing is per result returned (roughly <code>$0.002 per item</code>), so a scoped search stays cheap.</p>
+  <pre><code>curl &quot;https://api.apify.com/v2/datasets/$DATASET_ID/items?token=$APIFY_TOKEN&amp;format=json&quot;</code></pre>
+
+  <h3>FAQ</h3>
+  <dl class="faq">
+      <dt>Which formats are available?</dt>
+      <dd>Datasets export to CSV, JSON, Excel and other common formats directly from the run&#x27;s dataset view.</dd>
+      <dt>Do I need to write code?</dt>
+      <dd>No. A run can be started from the Apify console and the dataset downloaded from the UI; code is optional for automation.</dd>
+      <dt>How do I compare two snapshots?</dt>
+      <dd>Export both, match rows on item_url, and compare the price column — the same diff approach as an API-driven monitor.</dd>
+  </dl>
+
+  <h3>Related</h3>
+  <ul class="related">
+      <li><a href="japan-price-monitoring-api.html">Japan Price Monitoring API</a></li>
+      <li><a href="japan-market-data-api.html">Japan Market Data API</a></li>
+      <li><a href="japan-real-estate-price-data.html">Japan Real Estate Price Data</a></li>
+      <li><a href="japan-resale-market-data.html">Japan Resale Market Data</a></li>
+      <li><a href="blog/mandarake-price-tracking.html">Mandarake price tracking</a></li>
+      <li><a href="blog/dlsite-price-tracking.html">DLsite price tracking</a></li>
+  </ul>
+
+  <footer>
+    Independent utility publisher. All scrapers target retail storefronts and respect published terms; output is pricing/listing data only (no personal seller data). Prices in JPY unless converted.
+  </footer>
+</div>
+</body>
+</html>

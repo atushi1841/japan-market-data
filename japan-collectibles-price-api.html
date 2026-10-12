@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japan Collectibles Price API — Figures, Cards, Doujin</title>
+<meta name="description" content="Structured price data for Japanese collectibles: figures, trading cards and doujin works with JPY prices, grades, images and listing URLs.">
+<link rel="canonical" href="https://atushi1841.github.io/japan-market-data/japan-collectibles-price-api.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Japan Collectibles Price API — Figures, Cards, Doujin">
+<meta property="og:description" content="Structured price data for Japanese collectibles: figures, trading cards and doujin works with JPY prices, grades, images and listing URLs.">
+<meta property="og:url" content="https://atushi1841.github.io/japan-market-data/japan-collectibles-price-api.html">
+<style>
+  :root{--bg:#0f1115;--card:#1a1d24;--fg:#e8eaed;--acc:#ff6b35;--muted:#a0a7b1;--line:#2a2e37}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px}
+  header{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px}
+  h1{font-size:2rem;line-height:1.25;margin-bottom:12px}
+  h1 em{color:var(--acc);font-style:normal}
+  p.lead{color:var(--muted);font-size:1.05rem;max-width:760px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;margin:24px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .card h2{font-size:1.15rem;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.95rem}
+  .card .url{display:inline-block;margin-top:12px;color:var(--acc);text-decoration:none;font-weight:600;border:1px solid var(--acc);padding:8px 14px;border-radius:8px;font-size:.9rem}
+  .card .url:hover{background:var(--acc);color:#0f1115}
+  h3{padding-top:24px;font-size:1.25rem}
+  .note{background:var(--card);border-left:4px solid var(--acc);padding:16px;border-radius:8px;margin:20px 0;color:var(--muted);font-size:.95rem}
+  footer{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;color:var(--muted);font-size:.85rem}
+  a{color:var(--acc)}
+  code{background:#262a33;padding:1px 6px;border-radius:4px;font-size:.9em}
+  .crumbs{color:var(--muted);font-size:.85rem;margin-bottom:18px}
+  .crumbs a{color:var(--muted)}
+  .body p{margin:14px 0;color:#d5d9df}
+  .cta{margin:22px 0}
+  .cta .url{display:inline-block;margin:6px 10px 6px 0;color:var(--acc);text-decoration:none;font-weight:600;border:1px solid var(--acc);padding:9px 16px;border-radius:8px;font-size:.95rem}
+  .cta .url:hover{background:var(--acc);color:#0f1115}
+  table.fields{width:100%;border-collapse:collapse;margin:16px 0;font-size:.92rem}
+  table.fields th,table.fields td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.fields th{color:var(--muted);font-weight:600;width:34%}
+  table.fields td code{white-space:nowrap}
+  ul.tick{margin:14px 0 14px 20px;color:#d5d9df}
+  ul.tick li{margin:7px 0}
+  dl.faq{margin:14px 0}
+  dl.faq dt{font-weight:600;margin-top:16px}
+  dl.faq dd{color:var(--muted);margin:6px 0 0 0}
+  pre{background:#0b0d11;border:1px solid var(--line);border-radius:8px;padding:14px;overflow-x:auto;margin:16px 0}
+  pre code{background:none;padding:0;font-size:.85em;color:#c9d1d9}
+  ul.related{margin:14px 0 14px 20px}
+  ul.related li{margin:6px 0}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Japan Collectibles Price API","applicationCategory":"DeveloperApplication","operatingSystem":"Cloud (Apify)","description":"Structured price data for Japanese collectibles: figures, trading cards and doujin works with JPY prices, grades, images and listing URLs.","url":"https://atushi1841.github.io/japan-market-data/japan-collectibles-price-api.html","offers":{"@type":"Offer","price":"0.002","priceCurrency":"USD","description":"Pay per result; roughly $0.002 per item returned."},"publisher":{"@type":"Organization","name":"Japan Market Data"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Which collectible categories are covered?","acceptedAnswer":{"@type":"Answer","text":"Figures, manga, trading cards and doujin works are covered across the Mandarake and DLsite scrapers; the publisher page lists each actor."}},{"@type":"Question","name":"Can I compare across marketplaces?","acceptedAnswer":{"@type":"Answer","text":"Yes — run more than one actor and keep the source URL with each record."}},{"@type":"Question","name":"Is grading data standardised?","acceptedAnswer":{"@type":"Answer","text":"Grades follow each source's own convention, so treat them as source-published labels rather than a unified scale."}}]}</script>
+</head>
+<body>
+<div class="wrap">
+  <p class="crumbs"><a href="./">Japan Market Data</a> &rsaquo; Japan Collectibles Price API</p>
+  <header>
+    <h1>Japan Collectibles Price API</h1>
+  </header>
+
+  <div class="body">
+    <p>Collectible pricing rewards specificity. A generic &#x27;used figure&#x27; price is close to useless, while a price for one character, one scale, one grade and one edition is immediately actionable — and that granularity only comes from listing-level data.</p>
+    <p>These scrapers return listing-level records across the Japanese collectible floors, so you can slice by series, grade and marketplace instead of relying on an aggregate that averages away the difference.</p>
+  </div>
+
+  <div class="cta">
+    <a class="url" href="https://apify.com/fruitful_quintessence/mandarake-auction-scraper">Mandarake Auction Scraper &rarr;</a>
+    <a class="url" href="https://apify.com/fruitful_quintessence">All Japanese market scrapers &rarr;</a>
+  </div>
+
+  <h3>What you get</h3>
+  <table class="fields">
+    <tbody>
+      <tr><th><code>item_name</code></th><td>Title carrying series, scale and edition markers.</td></tr>
+      <tr><th><code>current_price_jpy</code></th><td>Price in yen.</td></tr>
+      <tr><th><code>condition</code></th><td>Grade — the main price-setting variable for collectibles.</td></tr>
+      <tr><th><code>item_url</code></th><td>Listing URL.</td></tr>
+      <tr><th><code>image_url</code></th><td>Photo for edition verification.</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Field names follow the actor's dataset schema and can differ slightly between actors — check the actor page for the exact input and output schema before wiring it into a pipeline.</p>
+
+  <h3>Use cases</h3>
+  <ul class="tick">
+      <li>Build a graded price guide for a figure or card series.</li>
+      <li>Spot the price effect of a rerun announcement within days.</li>
+      <li>Price an incoming collection acquisition before making an offer.</li>
+  </ul>
+
+  <h3>How a run works</h3>
+    <p class="note"><strong>Starting a run:</strong> call the Apify API with the actor id <code>fruitful_quintessence~mandarake-auction-scraper</code>, or press <em>Start</em> on the actor page and download the dataset. Check the actor page for its exact input schema — a run is scoped by the search terms you supply, and billing is per result returned (roughly <code>$0.002 per item</code>).</p>
+  <pre><code>curl -X POST &quot;https://api.apify.com/v2/acts/fruitful_quintessence~mandarake-auction-scraper/runs?token=$APIFY_TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{&quot;searchTerms&quot;: [&quot;your&quot;, &quot;search&quot;, &quot;terms&quot;]}&#x27;</code></pre>
+
+  <h3>FAQ</h3>
+  <dl class="faq">
+      <dt>Which collectible categories are covered?</dt>
+      <dd>Figures, manga, trading cards and doujin works are covered across the Mandarake and DLsite scrapers; the publisher page lists each actor.</dd>
+      <dt>Can I compare across marketplaces?</dt>
+      <dd>Yes — run more than one actor and keep the source URL with each record.</dd>
+      <dt>Is grading data standardised?</dt>
+      <dd>Grades follow each source&#x27;s own convention, so treat them as source-published labels rather than a unified scale.</dd>
+  </dl>
+
+  <h3>Related</h3>
+  <ul class="related">
+      <li><a href="anime-figure-price-data.html">Anime Figure Price Data</a></li>
+      <li><a href="japan-trading-card-price-data.html">Japan Trading Card Price Data</a></li>
+      <li><a href="mandarake-auction-data-api.html">Mandarake Auction Data API</a></li>
+      <li><a href="doujin-market-data.html">Doujin Market Data</a></li>
+      <li><a href="blog/mandarake-price-tracking.html">Mandarake price tracking</a></li>
+      <li><a href="blog/dlsite-price-tracking.html">DLsite price tracking</a></li>
+  </ul>
+
+  <footer>
+    Independent utility publisher. All scrapers target retail storefronts and respect published terms; output is pricing/listing data only (no personal seller data). Prices in JPY unless converted.
+  </footer>
+</div>
+</body>
+</html>

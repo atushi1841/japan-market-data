@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mercari Japan Price Data — C2C Listings as JSON</title>
+<meta name="description" content="Scrape Mercari Japan listings into JSON: real-time prices in JPY, condition, seller data and URLs from Japan&#x27;s largest C2C marketplace.">
+<link rel="canonical" href="https://atushi1841.github.io/japan-market-data/mercari-japan-price-data.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mercari Japan Price Data — C2C Listings as JSON">
+<meta property="og:description" content="Scrape Mercari Japan listings into JSON: real-time prices in JPY, condition, seller data and URLs from Japan&#x27;s largest C2C marketplace.">
+<meta property="og:url" content="https://atushi1841.github.io/japan-market-data/mercari-japan-price-data.html">
+<style>
+  :root{--bg:#0f1115;--card:#1a1d24;--fg:#e8eaed;--acc:#ff6b35;--muted:#a0a7b1;--line:#2a2e37}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px}
+  header{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px}
+  h1{font-size:2rem;line-height:1.25;margin-bottom:12px}
+  h1 em{color:var(--acc);font-style:normal}
+  p.lead{color:var(--muted);font-size:1.05rem;max-width:760px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;margin:24px 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .card h2{font-size:1.15rem;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.95rem}
+  .card .url{display:inline-block;margin-top:12px;color:var(--acc);text-decoration:none;font-weight:600;border:1px solid var(--acc);padding:8px 14px;border-radius:8px;font-size:.9rem}
+  .card .url:hover{background:var(--acc);color:#0f1115}
+  h3{padding-top:24px;font-size:1.25rem}
+  .note{background:var(--card);border-left:4px solid var(--acc);padding:16px;border-radius:8px;margin:20px 0;color:var(--muted);font-size:.95rem}
+  footer{border-top:1px solid var(--line);margin-top:40px;padding-top:20px;color:var(--muted);font-size:.85rem}
+  a{color:var(--acc)}
+  code{background:#262a33;padding:1px 6px;border-radius:4px;font-size:.9em}
+  .crumbs{color:var(--muted);font-size:.85rem;margin-bottom:18px}
+  .crumbs a{color:var(--muted)}
+  .body p{margin:14px 0;color:#d5d9df}
+  .cta{margin:22px 0}
+  .cta .url{display:inline-block;margin:6px 10px 6px 0;color:var(--acc);text-decoration:none;font-weight:600;border:1px solid var(--acc);padding:9px 16px;border-radius:8px;font-size:.95rem}
+  .cta .url:hover{background:var(--acc);color:#0f1115}
+  table.fields{width:100%;border-collapse:collapse;margin:16px 0;font-size:.92rem}
+  table.fields th,table.fields td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.fields th{color:var(--muted);font-weight:600;width:34%}
+  table.fields td code{white-space:nowrap}
+  ul.tick{margin:14px 0 14px 20px;color:#d5d9df}
+  ul.tick li{margin:7px 0}
+  dl.faq{margin:14px 0}
+  dl.faq dt{font-weight:600;margin-top:16px}
+  dl.faq dd{color:var(--muted);margin:6px 0 0 0}
+  pre{background:#0b0d11;border:1px solid var(--line);border-radius:8px;padding:14px;overflow-x:auto;margin:16px 0}
+  pre code{background:none;padding:0;font-size:.85em;color:#c9d1d9}
+  ul.related{margin:14px 0 14px 20px}
+  ul.related li{margin:6px 0}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Mercari Japan Price Data","applicationCategory":"DeveloperApplication","operatingSystem":"Cloud (Apify)","description":"Scrape Mercari Japan listings into JSON: real-time prices in JPY, condition, seller data and URLs from Japan's largest C2C marketplace.","url":"https://atushi1841.github.io/japan-market-data/mercari-japan-price-data.html","offers":{"@type":"Offer","price":"0.002","priceCurrency":"USD","description":"Pay per result; roughly $0.002 per item returned."},"publisher":{"@type":"Organization","name":"Japan Market Data"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is sold data available?","acceptedAnswer":{"@type":"Answer","text":"Mercari's public listings expose asking prices. For realised prices, the auction sources (Mandarake, Yahoo! Auctions) carry end timestamps."}},{"@type":"Question","name":"Can I search by keyword and category?","acceptedAnswer":{"@type":"Answer","text":"Yes — runs are scoped by the search terms you provide, and the marketplace category can be recorded with each record."}},{"@type":"Question","name":"How fresh is the result set?","acceptedAnswer":{"@type":"Answer","text":"Each run captures the state of the catalogue at that moment, so freshness is a function of how often you run it."}}]}</script>
+</head>
+<body>
+<div class="wrap">
+  <p class="crumbs"><a href="./">Japan Market Data</a> &rsaquo; Mercari Japan Price Data</p>
+  <header>
+    <h1>Mercari Japan Price Data</h1>
+  </header>
+
+  <div class="body">
+    <p>Mercari Japan is the single best proxy for what Japanese consumers actually pay for second-hand goods. Listings turn over quickly, prices are negotiated by individual sellers, and the same item can sit at wildly different asks depending on how urgently someone wants it gone.</p>
+    <p>Because the market is C2C, the spread is the signal. A single sweep shows the current price band for an item; a weekly sweep shows which direction it is moving.</p>
+  </div>
+
+  <div class="cta">
+    <a class="url" href="https://apify.com/fruitful_quintessence/mercari-japan-search-scraper">Mercari Japan Search Scraper &rarr;</a>
+    <a class="url" href="https://apify.com/fruitful_quintessence">All Japanese market scrapers &rarr;</a>
+  </div>
+
+  <h3>What you get</h3>
+  <table class="fields">
+    <tbody>
+      <tr><th><code>item_name</code></th><td>Listing title.</td></tr>
+      <tr><th><code>current_price_jpy</code></th><td>Asking price in yen.</td></tr>
+      <tr><th><code>condition</code></th><td>Seller-declared condition.</td></tr>
+      <tr><th><code>item_url</code></th><td>Listing URL.</td></tr>
+      <tr><th><code>image_url</code></th><td>Primary image.</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Field names follow the actor's dataset schema and can differ slightly between actors — check the actor page for the exact input and output schema before wiring it into a pipeline.</p>
+
+  <h3>Use cases</h3>
+  <ul class="tick">
+      <li>Buy-side research: establish a realistic price band before making an offer.</li>
+      <li>Sell-side pricing: check what comparable items currently ask before listing your own stock.</li>
+      <li>Arbitrage screening: surface Japanese listings that sit well below overseas equivalents.</li>
+  </ul>
+
+  <h3>How a run works</h3>
+    <p class="note"><strong>Starting a run:</strong> call the Apify API with the actor id <code>fruitful_quintessence~mercari-japan-search-scraper</code>, or press <em>Start</em> on the actor page and download the dataset. Check the actor page for its exact input schema — a run is scoped by the search terms you supply, and billing is per result returned (roughly <code>$0.002 per item</code>).</p>
+  <pre><code>curl -X POST &quot;https://api.apify.com/v2/acts/fruitful_quintessence~mercari-japan-search-scraper/runs?token=$APIFY_TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#x27;{&quot;searchTerms&quot;: [&quot;your&quot;, &quot;search&quot;, &quot;terms&quot;]}&#x27;</code></pre>
+
+  <h3>FAQ</h3>
+  <dl class="faq">
+      <dt>Is sold data available?</dt>
+      <dd>Mercari&#x27;s public listings expose asking prices. For realised prices, the auction sources (Mandarake, Yahoo! Auctions) carry end timestamps.</dd>
+      <dt>Can I search by keyword and category?</dt>
+      <dd>Yes — runs are scoped by the search terms you provide, and the marketplace category can be recorded with each record.</dd>
+      <dt>How fresh is the result set?</dt>
+      <dd>Each run captures the state of the catalogue at that moment, so freshness is a function of how often you run it.</dd>
+  </dl>
+
+  <h3>Related</h3>
+  <ul class="related">
+      <li><a href="mercari-price-monitoring.html">Mercari Price Monitoring</a></li>
+      <li><a href="japan-auction-price-data.html">Japan Auction Price Data</a></li>
+      <li><a href="resale-arbitrage-japan.html">Resale Arbitrage Japan</a></li>
+      <li><a href="japan-secondhand-market-data.html">Japan Secondhand Market Data</a></li>
+      <li><a href="blog/mandarake-price-tracking.html">Mandarake price tracking</a></li>
+      <li><a href="blog/dlsite-price-tracking.html">DLsite price tracking</a></li>
+  </ul>
+
+  <footer>
+    Independent utility publisher. All scrapers target retail storefronts and respect published terms; output is pricing/listing data only (no personal seller data). Prices in JPY unless converted.
+  </footer>
+</div>
+</body>
+</html>
