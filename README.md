@@ -97,3 +97,8 @@ MIT
 - [japan-used-instrument-market-scraper](https://apify.com/store/actors/japan-used-instrument-market-scraper) — Apify Store actor (total runs: 139)
 - [japan-kakaku-price-search](https://apify.com/store/actors/japan-kakaku-price-search) — Apify Store actor (total runs: 137)
 - [surugaya-japan-hobby-prices](https://apify.com/store/actors/surugaya-japan-hobby-prices) — Apify Store actor (total runs: 113)
+
+## MCP Registry
+
+This server is registered on the official [MCP Registry](https://registry.modelcontextprotocol.io).
+Find it via search: [japan-market-data](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.japan-market-data)
