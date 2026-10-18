@@ -150,3 +150,9 @@ MIT
 Built with automated Japan market data collection and analysis. All actors are pay-per-use (PPE) with pricing shown per run in the Apify Store.
 
 [Apify Store →](https://apify.com/fruitful_quintessence) · [MCP Registry →](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.atushi1841)
+
+---
+## Data & Store
+
+- **Apify Store:** https://apify.com/fruitful_quintessence
+- **Gumroad datasets:** https://atushi5.gumroad.com/l/kutuxe
