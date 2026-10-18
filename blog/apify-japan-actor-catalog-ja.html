@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本市場のデータ収集を1本に詰めた85個のApify Actor — カタログ公開と使い方</title>
+<meta name="description" content=" 日本市場のデータ収集を1本に詰めた85個のApify Actor — カタログ公開と使い方">
+<link rel="canonical" href="https://atushi1841.github.io/japan-market-data/blog/apify-japan-actor-catalog-ja.html">
+<style>
+  body{font-family:-apple-system,"Segoe UI",Roboto,"Hiragino Sans","Noto Sans JP",sans-serif;background:#f6f7f9;color:#1a1d24;max-width:820px;margin:0 auto;padding:32px 20px;line-height:1.8}
+  h1{font-size:1.7rem;line-height:1.4}.sub{color:#5b6470;margin-bottom:28px}
+  h2{font-size:1.25rem;margin-top:32px;border-bottom:2px solid #e3e6ea;padding-bottom:6px}
+  h3{font-size:1.05rem;margin-top:24px}
+  .box{background:#fff;border:1px solid #e3e6ea;border-radius:10px;padding:16px 20px;margin:16px 0}
+  .cta{display:inline-block;background:#ff6b35;color:#fff;font-weight:700;padding:12px 22px;border-radius:8px;text-decoration:none;margin:8px 8px 8px 0}
+  pre.code{background:#1a1d24;color:#e6e6e6;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:.85rem;line-height:1.5}
+  code{background:#e9ecef;padding:2px 5px;border-radius:4px;font-size:.9em}
+  a{color:#0066cc}
+  .back{margin-top:40px;font-size:.9rem}
+</style>
+</head>
+<body>
+<p> 日本市場のデータ収集を1本に詰めた85個のApify Actor — カタログ公開と使い方</p>
+<p>tags:</p>
+<ul>
+<li>apify</li>
+<li>webscraping</li>
+<li>japan</li>
+<li>dataengineering</li>
+<li>python</li>
+</ul>
+<p>private: false</p>
+<h1>日本市場のデータ収集を1本に詰めた85個のApify Actor — カタログ公開と使い方</h1>
+<p>日本市場のデータを自動で集めるためのApify Actorを <strong>85個</strong> 一気に整理しました。</p>
+<p>すべてのActorの説明・URL・使い方を1つのカタログ（<a href="https://apify.com/fruitful_quintessence">Apify Storeカタログ</a>）にまとめました。</p>
+<h2>このカタログでできること</h2>
+<ul>
+<li><strong>中古市場価格</strong>: メルカリ・ヤフオク・楽天市場・ラクマの価格データを一括取得</li>
+<li><strong>不動産・住宅</strong>: SUUMO・アパマンネット・大家情報の価格・物件情報</li>
+<li><strong>自動車</strong>: ゴーネットの車市場データ</li>
+<li><strong>飲食</strong>: テーログ・ホットペッパーの飲食店データ</li>
+<li><strong>公共データ</strong>: 天気・法務・厚生労働省・企業番号・世界銀行・ユーロスタット</li>
+<li><strong>AIエージェント連携</strong>: MCPサーバー経由でAIから呼び出し可能なAPI</li>
+</ul>
+<h2>主なActor（85本の一部）</h2>
+<ul>
+<li><a href="https://apify.com/fruitful_quintessence/google-search-scraper">google-search-scraper</a> — Google検索結果スクレイパー</li>
+<li><a href="https://apify.com/fruitful_quintessence/mercari-japan-search-scraper">mercari-japan-search-scraper</a> — メルカリ価格データ</li>
+<li><a href="https://apify.com/fruitful_quintessence/yahoo-auctions-japan-scraper">yahoo-auctions-japan-scraper</a> — ヤフオク価格データ</li>
+<li><a href="https://apify.com/fruitful_quintessence/rakuten-japan-mcp">rakuten-japan-mcp</a> — 楽天市場価格API（MCP対応）</li>
+<li><a href="https://apify.com/fruitful_quintessence/suumo-japan-real-estate-scraper">suumo-japan-real-estate-scraper</a> — SUUMO不動産データ</li>
+<li><a href="https://apify.com/fruitful_quintessence/japan-market-mcp">japan-market-mcp</a> — 中古市場価格比較API</li>
+<li><a href="https://apify.com/fruitful_quintessence/japan-fuel-price-mcp">japan-fuel-price-mcp</a> — 燃料価格API</li>
+<li><a href="https://apify.com/fruitful_quintessence/japan-minimum-wage-mcp">japan-minimum-wage-mcp</a> — 最低賃金検索API</li>
+<li><a href="https://apify.com/fruitful_quintessence/japan-anime-figure-price-data">japan-anime-figure-price-data</a> — アニメフィギュア中古価格</li>
+<li><a href="https://apify.com/fruitful_quintessence/mlit-japan-property-prices">mlit-japan-property-prices</a> — 国土交通省不動産価格</li>
+<li><a href="https://apify.com/fruitful_quintessence/japan-jma-weather">japan-jma-weather</a> — 気象庁天気データ</li>
+<li><a href="https://apify.com/fruitful_quintessence/japan-corporate-numbers">japan-corporate-numbers</a> — 企業番号データ</li>
+</ul>
+<h2>どう使うか</h2>
+<p>Apify Storeで各Actorを検索するか、<a href="https://apify.com/fruitful_quintessence">Apify Storeカタログ</a>から目的のActorを選びます。</p>
+<p>MCPサーバー対応のActorは、AIエージェント（Claude / Cursor / ChatGPT）から直接API呼び出しできます。</p>
+<h2>データ収集の実例</h2>
+<p>中古市場の価格データを1時間で取得する場合:</p>
+<ol>
+<li><code>mercari-japan-search-scraper</code> でキーワード検索</li>
+<li><code>japan-market-mcp</code> で価格比較API経由で一括取得</li>
+<li><code>mlit-japan-property-prices</code> で不動産価格と組み合わせる</li>
+</ol>
+<p>日本市場のデータ収集は、ApifyのActorを組み合わせることで <strong>1本のパイプライン</strong> にできます。</p>
+<h2>MCP経由でのアクセス</h2>
+<p>主要なMCPサーバーをSmithery経由でインストールできます：</p>
+<pre class="code">
+# japan-ec-mcp をインストール
+npx @smithery/cli install atushi1841/japan-ec-mcp --client claude
+
+# japan-market-mcp をインストール
+npx @smithery/cli install atushi1841/japan-market-mcp --client claude
+</pre>
+<h2>まとめ</h2>
+<p>85個のApify Actorを1つのカタログで把握できます。特定のデータが必要な場合は、まずカタログページから該当Actorを見つけ、必要に応じてMCPサーバー経由でAIエージェントに連携するのが効率的です。</p>
+<p>詳細は <a href="https://apify.com/fruitful_quintessence">Apify Storeカタログ</a> へ。</p>
+<hr>
+<h2>無料で能使うサンプル &amp; 週次CSVデータ</h2>
+<ul>
+<li><a href="https://atushi5.gumroad.com/l/kutuxe?utm_source=qiita">サンプル無料ダウンロード</a> — 日本ホビー・中古市場のサンプルデータ（7市場・約1,000行）</li>
+<li><a href="https://atushi5.gumroad.com/l/agyhq?utm_source=qiita">週次CSVデータセット</a> — 中古市場価格データを週次更新（1,000行以上）</li>
+</ul>
+<p>データ驱动の投資・転売・市場分析を始める方には、まず FREE Sample から始めてみてください。</p>
+<hr>
+<h2>この投稿で使用したデータソース</h2>
+<ul>
+<li><a href="https://apify.com/fruitful_quintessence/mercari-japan-search-scraper">mercari-japan-search-scraper</a></li>
+<li><a href="https://apify.com/fruitful_quintessence/yahoo-auctions-japan-scraper">yahoo-auctions-japan-scraper</a></li>
+<li><a href="https://apify.com/fruitful_quintessence/japan-market-mcp">japan-market-mcp</a></li>
+<li><a href="https://apify.com/fruitful_quintessence/rakuten-japan-mcp">rakuten-japan-mcp</a></li>
+<li><a href="https://apify.com/fruitful_quintessence/japan-fuel-price-mcp">japan-fuel-price-mcp</a></li>
+<li><a href="https://apify.com/fruitful_quintessence/japan-minimum-wage-mcp">japan-minimum-wage-mcp</a></li>
+</ul>
+<p class="back"><a href="https://atushi1841.github.io/japan-market-data/">← Japan Market Data トップへ</a></p>
+</body>
+</html>
