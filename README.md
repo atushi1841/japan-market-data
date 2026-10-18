@@ -120,7 +120,7 @@ All actors return structured JSON:
 
 | Channel | URL | Status |
 |---------|-----|--------|
-| [dev.to — Apify重複アクター統合ガイド](https://dev.to/atu_ino_ed473db24d76d234a/apifyzhong-fu-akutatong-he-gaido-59ben-wo1ben-nimatomerutowai-bu-liu-ru-ga3bei-ninaruli-you-4eok) | Published 2026-10-12 | Active |
+| [Pages Blog — 日本市場データガイド3本](https://atushi1841.github.io/japan-market-data/blog/apify-japan-actor-catalog-ja.html) | Published 2026-10-18 | Active |
 | dev.to weekly SEO pipeline | 29 articles cumulative | Active |
 | Qiita W41 series | 2 articles | Active |
 | GitHub Releases | [kensho-datasets](https://github.com/atushi1841/kensho-datasets/releases) | Weekly |
